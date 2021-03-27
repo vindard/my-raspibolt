@@ -1,0 +1,12 @@
+[Service]
+ExecStart=
+Restart=always
+RestartSec=1
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=backup-channels
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
