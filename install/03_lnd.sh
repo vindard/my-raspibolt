@@ -194,15 +194,15 @@ fetch_and_install_channel_backup() {
     BACKUP_SYSTEMD_FILE=systemd/lnd-channel-backup.service
 
     # Check for API token
-    if [[ -z $TOKEN ]] ; then
-        echo "Please enter value for 'TOKEN' in '.env' and re-run."
+    if [[ -z $DROPBOX_API_TOKEN ]] ; then
+        echo "Please enter value for 'DROPBOX_API_TOKEN' in '.env' and re-run."
         return 1
     fi
 
     # Fetch script and setup permissions
     wget -qN -O $BACKUP_SCRIPT $BACKUP_SCRIPT_URL
     sudo chmod +x $BACKUP_SCRIPT
-    sed -i "s/DROPBOX_APITOKEN=\".*\"/DROPBOX_APITOKEN=\"$TOKEN\"/" $BACKUP_SCRIPT
+    sed -i "s/DROPBOX_APITOKEN=\".*\"/DROPBOX_APITOKEN=\"$DROPBOX_API_TOKEN\"/" $BACKUP_SCRIPT
 
 
     # Install systemd service and start
