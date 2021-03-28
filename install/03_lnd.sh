@@ -184,14 +184,13 @@ install_lnd_connect() {
 }
 
 fetch_and_install_channel_backup() {
-    INSTALLS_DIR="$HOME/Installs"
-    mkdir -p $INSTALLS_DIR
+    INSTALL_DIR="/usr/local/bin"
 
-    BACKUP_SCRIPT_NAME="lnd-channel-backup.sh"
-    BACKUP_SCRIPT="$INSTALLS_DIR/$BACKUP_SCRIPT_NAME"
-    BACKUP_SCRIPT_URL="https://gist.githubusercontent.com/vindard/e0cd3d41bb403a823f3b5002488e3f90/raw/4bcf3c0163f77443a6f7c00caae0750b1fa0d63d/$BACKUP_SCRIPT_NAME"
+    BACKUP_SCRIPT="lnd-channel-backup.sh"
+    BACKUP_SCRIPT_URL="https://gist.githubusercontent.com/vindard/e0cd3d41bb403a823f3b5002488e3f90/raw/4bcf3c0163f77443a6f7c00caae0750b1fa0d63d/$BACKUP_SCRIPT"
 
     BACKUP_SYSTEMD_FILE=systemd/lnd-channel-backup.service
+    SYSTEMD_DIR=/etc/systemd/system
 
     # Check for API token
     if [[ -z $DROPBOX_API_TOKEN ]] ; then
@@ -200,9 +199,22 @@ fetch_and_install_channel_backup() {
     fi
 
     # Fetch script and setup permissions
-    wget -qN -O $BACKUP_SCRIPT $BACKUP_SCRIPT_URL
+    echo
+    echo "Fetching '$BACKUP_SCRIPT' from $BACKUP_SCRIPT_URL ..."
+    if wget -qN $BACKUP_SCRIPT_URL; then
+        echo "Fetched."
+    else
+        echo "Could not fetch, skipping channel backup setup"
+        return 1
+    fi
+
     sudo chmod +x $BACKUP_SCRIPT
     sed -i "s/DROPBOX_APITOKEN=\".*\"/DROPBOX_APITOKEN=\"$DROPBOX_API_TOKEN\"/" $BACKUP_SCRIPT
+
+    echo
+    echo "Installing '$BACKUP_SCRIPT' to '$INSTALL_DIR'..."
+    sudo mv $BACKUP_SCRIPT $INSTALL_DIR/
+    echo "Installed."
 
 
     # Install systemd service and start
@@ -211,10 +223,13 @@ fetch_and_install_channel_backup() {
         return 1
     fi
 
-    sudo sed -i "s|ExecStart=.*|ExecStart=$BACKUP_SCRIPT|g" $BACKUP_SYSTEMD_FILE
-    sudo cp $BACKUP_SYSTEMD_FILE $INSTALLS_DIR
+    sudo sed -i "s|ExecStart=.*|ExecStart=$INSTALL_DIR/$BACKUP_SCRIPT|g" $BACKUP_SYSTEMD_FILE
 
-    sudo cp $BACKUP_SYSTEMD_FILE /etc/systemd/system/
+    echo
+    echo "Installing '$BACKUP_SYSTEMD_FILE' to '$SYSTEMD_DIR'..."
+    sudo cp $BACKUP_SYSTEMD_FILE $SYSTEMD_DIR/
+    echo "Installed."
+
     sudo systemctl enable lnd-channel-backup
     sudo systemctl start lnd-channel-backup
 }
