@@ -22,6 +22,9 @@ source install/02_bitcoind.sh
 # == lnd install functions ==
 source install/03_lnd.sh
 
+# == electrs install functions ==
+source install/04_electrs.sh
+
 
 # == > SCRIPT START < ==
 
@@ -91,6 +94,12 @@ step_09() {
     run_lnd_install
 }
 
+# Step 10
+step_10() {
+    run_electrs_install
+}
+
+
 # == Step function calls ==
 
 run_setup() {
@@ -101,6 +110,9 @@ run_setup() {
     # step_05
     # step_06
     # step_07
+    # step_08
+    # step_09
+    step_10
 }
 
 run_setup
