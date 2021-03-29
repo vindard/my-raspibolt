@@ -186,3 +186,17 @@ install_tor() {
 
 	sudo systemctl restart tor
 }
+
+install_zsh() {
+	echo_label "zsh"
+
+	sudo apt update && sudo apt install -y zsh
+
+	sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+	# echo && echo "Enter the password for current user '$USER' to change shell to 'Zsh'"
+	# chsh -s $(which zsh)
+
+	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+	sed -i -E "s/(^plugins=.*)\)/\1 zsh-autosuggestions)/g" $HOME/.zshrc
+    # > Set theme to 'bira' in .zshrc (ZSH_THEME="bira") as per https://zshthem.es/all/
+}

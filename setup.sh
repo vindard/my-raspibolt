@@ -43,6 +43,7 @@ step_02() {
     install_recommended
     install_speedtest
     install_magic_wormhole
+    install_zsh
 }
 
 # Step 3
@@ -112,7 +113,7 @@ run_setup() {
     # step_07
     # step_08
     # step_09
-    step_10
+    # step_10
 }
 
 run_setup
