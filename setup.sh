@@ -11,19 +11,19 @@ fi
 source .env
 
 # == Helper functions ==
-source install/00_helpers.sh
+source install/000_helpers.sh
 
 # == System setup functions ==
-source install/01_system.sh
+source install/010_system.sh
 
 # == bitcoind install functions ==
-source install/02_bitcoind.sh
+source install/020_bitcoind.sh
 
 # == lnd install functions ==
-source install/03_lnd.sh
+source install/030_lnd.sh
 
 # == electrs install functions ==
-source install/04_electrs.sh
+source install/040_electrs.sh
 
 
 # == > SCRIPT START < ==
