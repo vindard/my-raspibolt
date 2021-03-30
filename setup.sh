@@ -25,6 +25,9 @@ source install/030_lnd.sh
 # == electrs install functions ==
 source install/040_electrs.sh
 
+# == specter install functions ==
+# source install/050_specter.sh
+
 
 # == > SCRIPT START < ==
 
@@ -100,6 +103,35 @@ step_10() {
     run_electrs_install
 }
 
+# Step 11: Install pyenv for 'specter' user (optional)
+step_11() {
+    NEW_USER=specter
+	echo_label "pyenv for $NEW_USER"
+
+    # Install pyenv system dependencies
+    source install/011_pyenv_deps.sh
+    install_pyenv_deps
+
+    # Install pyenv
+    if ! id $NEW_USER > /dev/null 2>&1; then
+        sudo adduser $NEW_USER
+    fi
+    sudo -u $NEW_USER install/012_pyenv.sh
+
+    # Install Python latest version
+    VERSION=3.9.2
+    sudo -u $NEW_USER bash -c "pyenv install -v $VERSION"
+}
+
+# Step 12
+step_12() {
+    NEW_USER=specter
+    if ! id $NEW_USER > /dev/null 2>&1; then
+        sudo adduser $NEW_USER
+    fi
+
+
+}
 
 # == Step function calls ==
 
@@ -114,6 +146,7 @@ run_setup() {
     # step_08
     # step_09
     # step_10
+    # step_11
 }
 
 run_setup
