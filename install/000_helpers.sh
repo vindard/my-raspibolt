@@ -52,3 +52,26 @@ uncomment_torrc() {
 			$FILE
 	done
 }
+
+check_dependency() {
+	for cmd in "$@"; do
+		if ! command -v $cmd >/dev/null 2>&1; then
+			echo "This script requires \"${cmd}\" to be installed"
+			return 1
+		fi
+	done
+}
+
+change_json_value() {
+	FILE_PATH="$1"
+	KEY="$2"
+	VALUE="$3"
+	if [[ -z $VALUE ]]; then
+		echo "Error: Please pass valid \$FILE_PATH, \$KEY & \$VALUE args to the function."
+		return 1
+	fi
+
+	sed -i \
+		"s/\(.*\"$KEY\"\: \"\).*\(\",\?\)/\1$VALUE\2/g" \
+		$FILE_PATH
+}

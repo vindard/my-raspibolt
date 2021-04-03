@@ -1,0 +1,29 @@
+{
+    "rpc": {
+        "autodetect": false,
+        "datadir": "",
+        "user": "",
+        "password": "",
+        "port": "8332",
+        "host": "localhost",
+        "protocol": "http",
+        "external_node": false
+    },
+    "internal_node": {
+        "autodetect": false,
+        "datadir": "",
+        "user": "",
+        "password": "",
+        "host": "localhost",
+        "protocol": "http",
+        "port": "8332"
+    },
+    "auth": "none",
+    "hwi_bridge_url": "http://localhost:25441/hwi/api/",
+    "unit": "btc",
+    "price_check": false,
+    "alt_rate": 1,
+    "alt_symbol": "BTC",
+    "price_provider": "",
+    "validate_merkle_proofs": false
+}

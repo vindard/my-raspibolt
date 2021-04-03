@@ -1,0 +1,17 @@
+[Unit]
+Description=Specter Desktop Service
+After=multi-user.target
+Conflicts=getty@tty1.service
+
+[Service]
+Type=simple
+ExecStart=/home/<specter-user>/.pyenv/versions/specter-desktop/bin/python -m cryptoadvance.specter server --host 0.0.0.0
+Environment="PATH=/home/<specter-user>/.pyenv/versions/specter-desktop/bin:$PATH"
+StandardInput=tty-force
+
+# Run as <specter-user>:<specter-user>
+User=<specter-user>
+Group=<specter-user>
+
+[Install]
+WantedBy=multi-user.target

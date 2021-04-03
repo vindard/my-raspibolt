@@ -85,5 +85,5 @@ EOF
 }
 
 
-# == Function definitions ==
+# == Function calls ==
 install_pyenv
