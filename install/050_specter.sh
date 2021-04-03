@@ -99,12 +99,36 @@ setup_config() {
         $RPC_PASS
 }
 
+setup_tor_and_tor_requests() {
+    # Enable Tor and toggle "only tor" to true
+    change_json_value $SPECTER_CONFIG \
+        "proxy_url" \
+        "socks5h://localhost:9050"
+
+    toggle_json_true $SPECTER_CONFIG \
+        "only_tor"
+
+
+    # Setup fairly private price checker over Tor
+    toggle_json_true $SPECTER_CONFIG \
+        "price_check"
+
+    change_json_value $SPECTER_CONFIG \
+        "alt_symbol" \
+        "$"
+
+    change_json_value $SPECTER_CONFIG \
+        "price_provider" \
+        "spotbit_bitstamp"
+}
+
 # == Function calls ==
 
 run_specter_install() {
     fetch_specter
     install_specter
     setup_config
+    setup_tor_and_tor_requests
 }
 
 run_specter_install

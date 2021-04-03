@@ -71,7 +71,34 @@ change_json_value() {
 		return 1
 	fi
 
+	# Alternative 1 WITH comma at end
 	sed -i \
-		"s/\(.*\"$KEY\"\: \"\).*\(\",\?\)/\1$VALUE\2/g" \
+		"s/\(.*\"$KEY\"\:\).*,\s*\$/\1 \"$VALUE\",/g" \
 		$FILE_PATH
+
+	# Alternative 2 FOR NO comma at end
+	sed -i \
+		"s/\(.*\"$KEY\"\:\).*[^,]\s*\$/\1 \"$VALUE\"/g" \
+		$FILE_PATH
+}
+
+toggle_json_true() {
+	FILE_PATH="$1"
+	KEY="$2"
+	VALUE="true"
+	if [[ -z $KEY ]]; then
+		echo "Error: Please pass valid \$FILE_PATH & \$KEY args to the function."
+		return 1
+	fi
+
+	# Alternative 1 WITH comma at end
+	sed -i \
+		"s/\(.*\"$KEY\"\:\).*,\s*\$/\1 $VALUE,/g" \
+		$FILE_PATH
+
+	# Alternative 2 FOR NO comma at end
+	sed -i \
+		"s/\(.*\"$KEY\"\:\).*[^,]\s*\$/\1 $VALUE/g" \
+		$FILE_PATH
+
 }
