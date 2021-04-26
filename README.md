@@ -20,5 +20,7 @@ I also include sensitive values in a `.env` file in the top-level dir that gets 
 ```
 export DROPBOX_API_TOKEN=
 export LND_UNLOCK_PWD=
+export TSM_USER=
+export TSM_PASS=
 
 ```

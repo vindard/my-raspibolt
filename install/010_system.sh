@@ -21,6 +21,7 @@ install_standard() {
 }
 
 install_recommended() {
+    # From https://stadicus.github.io/RaspiBolt/raspibolt_20_pi.html#software-update
 	echo_label "recommended tools"
 
 	sudo apt update && sudo apt install -y \
@@ -114,28 +115,34 @@ move_swap_file() {
     sudo dphys-swapfile install
 }
 
-setup_ufw_and_fail2ban() {
+setup_ufw() {
+	echo_label "ufw"
+
     sudo apt update && sudo apt install -y \
         ufw
 
-    if ! command -v ufw >/dev/null 2>&1; then
-        echo "UFW not installed successfully, skipping rest of config..."
+    if ! sudo ufw status > /dev/null 2>&1; then
+        echo "UFW not installed successfully, or REBOOT may be required. Skipping rest of config..."
         return 1
     fi
 
     sudo ufw default deny incoming
     sudo ufw default allow outgoing
 
-    sudo ufw allow 22    comment 'allow SSH'
+    sudo ufw allow 22 comment 'allow SSH'
     # sudo ufw allow 50002 comment 'allow Electrum SSL'
 
     sudo ufw enable
     sudo systemctl enable ufw
     sudo ufw status
+}
 
-
+setup_fail2ban() {
     # Install fail2ban with default config
-    sudo apt install -y fail2ban
+    echo_label "ufw fail2ban"
+
+    sudo apt update && sudo apt install -y \
+        fail2ban
 }
 
 install_tor() {

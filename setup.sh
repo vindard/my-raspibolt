@@ -29,6 +29,9 @@ source install/040_electrs.sh
 source install/051_specter_deps.sh
 source install/052_specter_systemd.sh
 
+# == transmission install functions ==
+source install/060_transmission.sh
+
 
 # == > SCRIPT START < ==
 
@@ -36,9 +39,9 @@ source install/052_specter_systemd.sh
 
 # Step 1
 # Run  sudo raspi-config and change:
-#    1. <1> change password
-#    2. <8> Update system
-#    3. Set root password with '$ sudo passwd root'
+#    1. Set pi password with '$ sudo passwd pi'
+#    2. Set root password with '$ sudo passwd root'
+#    3. Run sudo raspi-config and set localisation
 
 # Step 2
 step_02() {
@@ -76,7 +79,8 @@ step_05() {
 
 # Step 6
 step_06() {
-    setup_ufw_and_fail2ban
+    setup_ufw
+    setup_fail2ban
 
     # Optionally manually increase open file limits for TCP connections
     # > https://stadicus.github.io/RaspiBolt/raspibolt_21_security.html#increase-your-open-files-limit
@@ -146,6 +150,11 @@ step_12() {
         $SPECTER_USER
 }
 
+# Step 13
+step_13() {
+    run_transmission_install
+}
+
 # == Step function calls ==
 
 run_setup() {
@@ -161,6 +170,7 @@ run_setup() {
     # step_10
     # step_11
     # step_12
+    # step_13
 }
 
 run_setup

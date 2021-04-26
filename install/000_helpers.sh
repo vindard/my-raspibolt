@@ -73,12 +73,12 @@ change_json_value() {
 
 	# Alternative 1 WITH comma at end
 	sed -i \
-		"s/\(.*\"$KEY\"\:\).*,\s*\$/\1 \"$VALUE\",/g" \
+		"s|\(.*\"$KEY\"\:\).*,\s*\$|\1 \"$VALUE\",|g" \
 		$FILE_PATH
 
 	# Alternative 2 FOR NO comma at end
 	sed -i \
-		"s/\(.*\"$KEY\"\:\).*[^,]\s*\$/\1 \"$VALUE\"/g" \
+		"s|\(.*\"$KEY\"\:\).*[^,]\s*\$|\1 \"$VALUE\"|g" \
 		$FILE_PATH
 }
 
