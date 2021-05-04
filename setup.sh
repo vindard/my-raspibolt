@@ -32,6 +32,9 @@ source install/052_specter_systemd.sh
 # == transmission install functions ==
 source install/060_transmission.sh
 
+# == sphinx.chat install functions ==
+source install/070_sphinx.sh
+
 
 # == > SCRIPT START < ==
 
@@ -155,6 +158,12 @@ step_13() {
     run_transmission_install
 }
 
+step_14() {
+    run_sphinx_install
+    # Todo:
+    # - persist sphinx.db file to cloud
+}
+
 # == Step function calls ==
 
 run_setup() {
@@ -171,6 +180,7 @@ run_setup() {
     # step_11
     # step_12
     # step_13
+    # step_14
 }
 
 run_setup

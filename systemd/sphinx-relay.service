@@ -1,0 +1,17 @@
+[Unit]
+Description=Sphinx Relay Service
+After=network.target
+
+[Service]
+Type=simple
+User=<sphinx-user>
+WorkingDirectory=<sphinx-dir>/config
+ExecStart=npm run prod
+Restart=always
+RestartSec=5
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=sphinx-relay
+
+[Install]
+WantedBy=multi-user.target

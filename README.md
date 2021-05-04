@@ -18,9 +18,20 @@ Everything is designed to be run from the `setup.sh` script. I've separated all 
 I also include sensitive values in a `.env` file in the top-level dir that gets sourced into the main script. The scripts currently expect the following variables:
 
 ```
+# General device info
+export LOCAL_IP=
+
+# For backups
 export DROPBOX_API_TOKEN=
+
+# For lnd auto-unlock
 export LND_UNLOCK_PWD=
+
+# For Transmission UI
 export TSM_USER=
 export TSM_PASS=
+
+# For Sphinx Relay
+export SPHINX_PORT=     # optional
 
 ```
