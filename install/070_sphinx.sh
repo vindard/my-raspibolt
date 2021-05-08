@@ -63,7 +63,7 @@ install_sphinx() {
 
     # Copy LND files required
     if [[ ! "$SPHINX_USER" == "bitcoin" ]]; then
-        mkdir -p $SPHINX_DATA_SYMLINK/data/chain/bitcoin/mainnet
+        sudo mkdir -p $SPHINX_DATA_SYMLINK/data/chain/bitcoin/mainnet
         sudo cp "$LND_DIR/data/chain/bitcoin/mainnet/admin.macaroon" "$SPHINX_DATA_SYMLINK/data/chain/bitcoin/mainnet/"
 
         sudo cp "$LND_DIR/tls.cert" $SPHINX_DATA_SYMLINK

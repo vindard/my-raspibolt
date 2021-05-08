@@ -35,6 +35,9 @@ source install/060_transmission.sh
 # == sphinx.chat install functions ==
 source install/070_sphinx.sh
 
+# == thunderhub install functions ==
+source install/080_thunderhub.sh
+
 
 # == > SCRIPT START < ==
 
@@ -164,6 +167,10 @@ step_14() {
     # - persist sphinx.db file to cloud
 }
 
+step_15() {
+    run_thunderhub_install
+}
+
 # == Step function calls ==
 
 run_setup() {
@@ -181,6 +188,7 @@ run_setup() {
     # step_12
     # step_13
     # step_14
+    # step_15
 }
 
 run_setup

@@ -1,0 +1,7 @@
+masterPassword: '<PASSWORD>' # Default password unless defined in account
+accounts:
+  - name: 'raspibolt'
+    serverUrl: '127.0.0.1:10009'
+    macaroonPath: '/home/<user>/.lnd/data/chain/bitcoin/mainnet/admin.macaroon'
+    certificatePath: '/home/<user>/.lnd/tls.cert'
+   #password: 'accountpassword'

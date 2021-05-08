@@ -32,6 +32,10 @@ export TSM_USER=
 export TSM_PASS=
 
 # For Sphinx Relay
-export SPHINX_PORT=     # optional
+export SPHINX_PORT=         # optional
+
+# For Thunderhub
+export THUNDERHUB_PORT=     # optional
+export THUB_MASTER_PASS=
 
 ```

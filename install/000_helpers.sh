@@ -43,6 +43,23 @@ append_to_bash_aliases() {
 	append_to_file "$@"
 }
 
+UNCOMMENT_FILE=""
+uncomment_file() {
+	if [[ -z $UNCOMMENT_FILE ]]; then
+		echo "Filename for uncommenting not set at \$UNCOMMENT_FILE, skipping..."
+		return 1
+	elif [[ ! -e $UNCOMMENT_FILE ]]; then
+		echo "File $UNCOMMENT_FILE does not exist, skipping..."
+		return 1
+	fi
+
+	for string in "$@"; do
+		sudo sed -i \
+			"s/#\s\?\($string\)/\1/g" \
+			$UNCOMMENT_FILE
+	done
+}
+
 uncomment_torrc() {
 	FILE="/etc/tor/torrc"
 
