@@ -14,6 +14,23 @@ run_first_update() {
 append_to_file() {
 	if [[ -e $FILE ]]; then
 		for line in "$@"; do
+			if [[ -z $line ]] || ! cat $FILE | grep -q "$line"; then
+				echo "$line" | tee -a $FILE > /dev/null
+			fi
+		done
+
+		# Delete all trailing blank lines at end of file
+		# (https://unix.stackexchange.com/a/81687)
+		sed -i -e :a -e '/^\n*$/{$d;N;};/\n$/ba' $FILE
+		echo | tee -a $FILE > /dev/null
+	else
+		echo "Cannot append to '$FILE', file does not exist"
+	fi
+}
+
+su_append_to_file() {
+	if [[ -e $FILE ]]; then
+		for line in "$@"; do
 			if [[ -z $line ]] || ! sudo cat $FILE | grep -q "$line"; then
 				echo "$line" | sudo tee -a $FILE > /dev/null
 			fi
@@ -30,16 +47,18 @@ append_to_file() {
 
 append_to_sources_list() {
 	FILE="/etc/apt/sources.list"
-	append_to_file "$@"
+	su_append_to_file "$@"
 }
 
 append_to_torrc() {
 	FILE="/etc/tor/torrc"
-	append_to_file "$@"
+	su_append_to_file "$@"
 }
 
 append_to_bash_aliases() {
 	FILE="$HOME/.bash_aliases"
+	touch $FILE
+
 	append_to_file "$@"
 }
 
@@ -118,4 +137,58 @@ toggle_json_true() {
 		"s/\(.*\"$KEY\"\:\).*[^,]\s*\$/\1 $VALUE/g" \
 		$FILE_PATH
 
+}
+
+
+install_pyenv_for_user() {
+	PYENV_USER=$1
+	echo_label "pyenv for user '$PYENV_USER'"
+
+    # Install pyenv system dependencies
+    source install/011_pyenv_deps.sh
+    install_pyenv_deps
+
+    # Install pyenv
+    if ! id $PYENV_USER > /dev/null 2>&1; then
+        sudo adduser $PYENV_USER
+    fi
+    sudo -u $PYENV_USER install/012_pyenv.sh
+}
+
+
+load_pyenv() {
+    export PATH="$HOME/.pyenv/bin:$PATH"
+    if ! check_dependency pyenv; then
+        echo "'pyenv' not installed, skipping rest of 'specter' setup..."
+        exit 1
+    fi
+
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+}
+
+load_pyenv_virtual_env() {
+    # Check for required variables
+    if [[ -z $VENV_PY_VERSION ]]; then
+        echo "Please specify a Python version number for pyenv in \$VENV_PY_VERSION before continuing"
+        return 1
+    elif [[ -z $VENV_NAME ]]; then
+        echo "Please specify a Python version number for pyenv in \$VENV_NAME before continuing"
+        return 1
+    fi
+
+    # Load pyenv into shell
+    load_pyenv
+
+    # Switch to '$VENV_NAME' virtualenv
+    if ! pyenv versions | grep -q $VENV_PY_VERSION; then
+        pyenv install -v $VENV_PY_VERSION
+    fi
+    if ! pyenv versions | grep -q $VENV_NAME; then
+        pyenv virtualenv $VENV_PY_VERSION $VENV_NAME
+    fi
+
+    pyenv shell $VENV_NAME
+    python -m pip install --upgrade pip
+    echo "Python pyenv version: $(pyenv version)"
 }

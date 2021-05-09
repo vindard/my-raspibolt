@@ -38,6 +38,9 @@ source install/070_sphinx.sh
 # == thunderhub install functions ==
 source install/080_thunderhub.sh
 
+# == lndmanage install functions ==
+source install/090_lndmanage.sh
+
 
 # == > SCRIPT START < ==
 
@@ -171,6 +174,10 @@ step_15() {
     run_thunderhub_install
 }
 
+step_16() {
+    run_lndmanage_install
+}
+
 # == Step function calls ==
 
 run_setup() {
@@ -189,6 +196,7 @@ run_setup() {
     # step_13
     # step_14
     # step_15
+    # step_16
 }
 
 run_setup

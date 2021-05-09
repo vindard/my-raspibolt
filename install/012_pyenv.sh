@@ -4,7 +4,7 @@
 # == Function definitions ==
 
 install_pyenv() {
-    INSTALLS_DIR=$HOME/Installs
+    INSTALLS_DIR=/tmp
     mkdir $INSTALLS_DIR
     pushd $INSTALLS_DIR > /dev/null
 
@@ -62,6 +62,13 @@ eval "$(pyenv virtualenv-init -)"
 # 	status --is-interactive; and . (pyenv virtualenv-init -|psub)
 # end
 EOF
+
+		cat << 'EOF' >> $HOME/.profile
+
+# For pyenv
+eval "$(pyenv init --path)"
+EOF
+
 
 		echo "Reset shell to complete:"
 		echo "\$ exec \"\$SHELL\""

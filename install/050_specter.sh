@@ -35,17 +35,6 @@ fetch_specter() {
     popd > /dev/null
 }
 
-load_pyenv() {
-    export PATH="$HOME/.pyenv/bin:$PATH"
-    if ! check_dependency pyenv; then
-        echo "'pyenv' not installed, skipping rest of 'specter' setup..."
-        exit 1
-    fi
-
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
-}
-
 install_specter() {
     load_pyenv
     pushd $REPO_DIR > /dev/null
