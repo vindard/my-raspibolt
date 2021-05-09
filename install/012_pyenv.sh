@@ -46,26 +46,22 @@ install_pyenv() {
 	# Proceed with pyenv install
 	if ! command -v pyenv >/dev/null 2>&1
 	then
+		echo && echo "Adding pyenv setting to '$HOME/.bashrc" && echo "---"
 		curl -L $SCRIPT | bash && \
 		cat << 'EOF' >> $HOME/.bashrc
 
 # For pyenv
-# Comment one of the following blocks
-
-export PATH="$HOME/.pyenv/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-
-# if echo $SHELL | grep -q "/fish"
-# 	set -x PATH "$HOME/.pyenv/bin" $PATH
-# 	status --is-interactive; and . (pyenv init -|psub)
-# 	status --is-interactive; and . (pyenv virtualenv-init -|psub)
-# end
+if command -v pyenv 1>/dev/null 2>&1; then
+        eval "$(pyenv init -)"
+fi
 EOF
 
+		echo && echo "Adding pyenv setting to '$HOME/.profile" && echo "---"
 		cat << 'EOF' >> $HOME/.profile
 
 # For pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 EOF
 

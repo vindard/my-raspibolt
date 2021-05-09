@@ -30,7 +30,10 @@ configure_lndmanage() {
     CONFIG_FILE="$HOME/.lndmanage/config.ini"
 
     # First run
-    lndmanage
+    load_pyenv_virtual_env || return 1
+    if [[ ! -e $CONFIG_FILE ]]; then
+        lndmanage
+    fi
 
     # Edit config
     sed -i \

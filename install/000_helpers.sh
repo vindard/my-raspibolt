@@ -157,14 +157,18 @@ install_pyenv_for_user() {
 
 
 load_pyenv() {
-    export PATH="$HOME/.pyenv/bin:$PATH"
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+
     if ! check_dependency pyenv; then
         echo "'pyenv' not installed, skipping rest of 'specter' setup..."
         exit 1
     fi
 
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
+    eval "$(pyenv init --path)"
+    if command -v pyenv 1>/dev/null 2>&1; then
+        eval "$(pyenv init -)"
+    fi
 }
 
 load_pyenv_virtual_env() {
