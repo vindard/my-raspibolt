@@ -62,6 +62,11 @@ append_to_bash_aliases() {
 	append_to_file "$@"
 }
 
+append_to_sysctl() {
+	FILE="/etc/sysctl.conf"
+	su_append_to_file "$@"
+}
+
 UNCOMMENT_FILE=""
 uncomment_file() {
 	if [[ -z $UNCOMMENT_FILE ]]; then
