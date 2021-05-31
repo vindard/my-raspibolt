@@ -4,8 +4,9 @@
 # required to be separate so that it can be called
 # and run as another user from the parent script.
 
-THUNDERHUB_DIR=$1
+THUNDERHUB_GIT_DIR=$1
 THUNDERHUB_DATA_SYMLINK=$2
+THUNDERHUB_LND_SYMLINK=$3
 
 # == Helper functions ==
 source install/000_helpers.sh
@@ -17,13 +18,13 @@ install_thunderhub_as_user() {
     echo_label "NPM step of Thunderhub"
 
     # Check for repo
-    if [[ ! -d $THUNDERHUB_DIR ]]; then
-        echo "Repo not setup at $THUNDERHUB_DIR, clone repo and retry..."
+    if [[ ! -d $THUNDERHUB_GIT_DIR ]]; then
+        echo "Repo not setup at $THUNDERHUB_GIT_DIR, clone repo and retry..."
         return 1
     fi
 
     # Install
-    pushd $THUNDERHUB_DIR > /dev/null
+    pushd $THUNDERHUB_GIT_DIR > /dev/null
     echo && echo "\$ npm install" && echo "---"
     npm install
     echo && echo "\$ npm run build" && echo "---"
@@ -36,8 +37,8 @@ configure_thunderhub() {
 
     # EDIT .env FILE
 
-    ENV_FILE="$THUNDERHUB_DIR/.env.local"
-    cp $THUNDERHUB_DIR/.env $ENV_FILE
+    ENV_FILE="$THUNDERHUB_GIT_DIR/.env.local"
+    cp $THUNDERHUB_GIT_DIR/.env $ENV_FILE
 
     # Edit config file location
     sed -i \
@@ -55,14 +56,14 @@ configure_thunderhub() {
     # Set dir location
     CERTS_DIR=$LND_DIR
     if [[ ! "$USER" == "bitcoin" ]]; then
-        CERTS_DIR=$THUNDERHUB_DATA_SYMLINK
+        CERTS_DIR=$THUNDERHUB_LND_SYMLINK
     fi
 
     # Configure thubConfig.yaml
     cp configs/thubConfig.yaml $THUNDERHUB_DATA_SYMLINK/
 
     sed -i \
-        "s|/home/<user>/.lnd|$THUNDERHUB_DATA_SYMLINK|g" \
+        "s|/home/<user>/.lnd|$THUNDERHUB_LND_SYMLINK|g" \
         $THUNDERHUB_DATA_SYMLINK/thubConfig.yaml
 
     if [[ -z $THUB_MASTER_PASS ]] ; then
