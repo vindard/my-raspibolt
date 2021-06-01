@@ -44,6 +44,9 @@ source install/090_lndmanage.sh
 # == lndmanage install functions ==
 source install/100_bos.sh
 
+# == lndmanage install functions ==
+source install/110_lndhub.sh
+
 
 # == > SCRIPT START < ==
 
@@ -185,6 +188,11 @@ step_17() {
     run_bos_install
 }
 
+step_18() {
+    run_lndhub_install
+}
+
+
 # == Step function calls ==
 
 run_setup() {
@@ -205,6 +213,7 @@ run_setup() {
     # step_15
     # step_16
     # step_17
+    step_18
 }
 
 run_setup

@@ -38,4 +38,7 @@ export SPHINX_PORT=         # optional
 export THUNDERHUB_PORT=     # optional
 export THUB_MASTER_PASS=
 
+# For LNDHub
+export LNDHUB_PORT=         # optional
+
 ```
