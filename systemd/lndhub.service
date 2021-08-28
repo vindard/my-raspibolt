@@ -1,7 +1,7 @@
 [Unit]
 Description=LndHub Wrapper for Lightning Daemon
-Wants=lnd.service
-After=lnd.service
+Wants=lnd.service redis.service
+After=lnd.service redis.service
 
 [Service]
 WorkingDirectory=/home/<lndhub-user>/LndHub
