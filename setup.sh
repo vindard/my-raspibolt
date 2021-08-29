@@ -41,11 +41,14 @@ source install/080_thunderhub.sh
 # == lndmanage install functions ==
 source install/090_lndmanage.sh
 
-# == lndmanage install functions ==
+# == bos install functions ==
 source install/100_bos.sh
 
-# == lndmanage install functions ==
+# == lndhub install functions ==
 source install/110_lndhub.sh
+
+# == mempool.space install functions ==
+source install/120_mempool.sh
 
 
 # == > SCRIPT START < ==
@@ -192,6 +195,10 @@ step_18() {
     run_lndhub_install
 }
 
+step_19() {
+    run_mempool_install
+}
+
 
 # == Step function calls ==
 
@@ -213,7 +220,8 @@ run_setup() {
     # step_15
     # step_16
     # step_17
-    step_18
+    # step_18
+    step_19
 }
 
 run_setup
