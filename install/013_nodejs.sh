@@ -4,7 +4,7 @@
 # == Function definitions ==
 
 install_nodejs() {
-    SETUP_SCRIPT="setup_12"
+    SETUP_SCRIPT="setup_16"
 
     # Add the Node JS package repository
     pushd /tmp
