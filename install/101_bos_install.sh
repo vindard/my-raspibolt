@@ -42,22 +42,33 @@ configure_bos() {
         return 1
     fi
 
-    # Set dir location
-    CREDS_FILENAME="credentials.json"
+    echo_label ": Symlinking creds to ~/.lnd"
 
-    # Configure credentials.json
-    # NOTE!: Not sure what to put for 'YOUR_NODE_NAME'
-    cp "configs/bos_credentials.json" \
-        "$BOS_DATA_SYMLINK/YOUR_NODE_NAME/$CREDS_FILENAME"
+    # CREDS_DIR can be instantiated with 'scripts/copy_lnd_creds.sh'
+    CREDS_DIR="/mnt/ext/apps-data/lnd-certs/"
+    LND_DIR="$HOME/.lnd"
+    ln -s "$CREDS_DIR" "$LND_DIR"
 
-    sed -i \
-        "s|<data-dir>|$BOS_DATA_SYMLINK|g" \
-        "$BOS_DATA_SYMLINK/$CREDS_FILENAME"
+    # START CREDS CONFIG
+    # This is an alternative to symlinking a .lnd dir above
 
-    echo "Configured 'credentials.json' for balance of satoshis"
+    # # Set dir location
+    # CREDS_FILENAME="credentials.json"
+
+    # # Configure credentials.json
+    # # NOTE!: Not sure what to put for 'YOUR_NODE_NAME'
+    # cp "configs/bos_credentials.json" \
+    #     "$BOS_DATA_SYMLINK/YOUR_NODE_NAME/$CREDS_FILENAME"
+
+    # sed -i \
+    #     "s|<data-dir>|$BOS_DATA_SYMLINK|g" \
+    #     "$BOS_DATA_SYMLINK/$CREDS_FILENAME"
+
+    # echo "Configured 'credentials.json' for balance of satoshis"
+    # END CREDS CONFIG
 }
 
 # == Function calls ==
 
 install_bos_as_user
-# configure_bos     # Can't figure what to put for 'YOUR_NODE_NAME'
+configure_bos     # Can't figure what to put for 'YOUR_NODE_NAME'

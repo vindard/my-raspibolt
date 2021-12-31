@@ -40,14 +40,6 @@ install_bos() {
     sudo rm -rf $BOS_DATA_SYMLINK
     sudo ln -s $BOS_DATA_DIR $BOS_DATA_SYMLINK
 
-    # Copy LND files required
-    if [[ ! "$BOS_USER" == "bitcoin" ]]; then
-        sudo mkdir -p $USER_LND_DIR/data/chain/bitcoin/mainnet
-        sudo cp "$LND_DIR/data/chain/bitcoin/mainnet/admin.macaroon" "$USER_LND_DIR/data/chain/bitcoin/mainnet/"
-
-        sudo cp "$LND_DIR/tls.cert" $USER_LND_DIR
-    fi
-
     # Change data dir ownership
     sudo chown -R $BOS_USER: $BOS_DATA_DIR
     sudo chown -R $BOS_USER: $BOS_DATA_SYMLINK
