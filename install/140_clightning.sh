@@ -9,17 +9,16 @@ VERSION_TAG="v0.10.2"
 CLIGHTNING_GIT_DIR="/home/$CLIGHTNING_USER/$CLIGHTNING_DIRNAME"
 GITHUB_REPO="https://github.com/ElementsProject/$CLIGHTNING_DIRNAME.git"
 
+MOUNTPOINT="/mnt/ext"
 SYMLINK_DIR="/home/$CLIGHTNING_USER"
 CLIGHTNING_DATA_SYMLINK="$SYMLINK_DIR/.$CLIGHTNING_DIRNAME"
+CLIGHTNING_DATA_DIR="$MOUNTPOINT/$CLIGHTNING_DIRNAME"
 
 
 # == Helper functions ==
 source install/000_helpers.sh
 
 setup_symlinks() {
-    MOUNTPOINT="/mnt/ext"
-    CLIGHTNING_DATA_DIR="$MOUNTPOINT/$CLIGHTNING_DIRNAME"
-
     # Check for successful mount
     if ! mount | grep -q $MOUNTPOINT; then
         echo "No drive mounted at '$MOUNTPOINT'"
@@ -135,6 +134,25 @@ setup_clightning_systemd() {
     sudo systemctl start lightningd
 }
 
+enable_pi_permissions() {
+    echo "Allocating lightningd/lightning-cli permissions to 'pi' user"
+    CLIGHTNING_BITCOIN_DIR="$CLIGHTNING_DATA_DIR/bitcoin"
+
+    if [[ -e $CLIGHTNING_BITCOIN_DIR ]]; then
+        sudo chmod g+X $CLIGHTNING_BITCOIN_DIR
+    else
+        echo "c-lightning data data dir not found at '$CLIGHTNING_BITCOIN_DIR', skipping..."
+        return 1
+    fi
+
+    echo
+    echo "---------------"
+    echo "Calling 'lightning-cli' from user 'pi'..."
+    echo
+    lightning-cli getinfo \
+        || echo "'lightning-cli' was not successfully permissioned to user 'pi'" && return 1
+}
+
 
 
 # == Function calls ==
@@ -144,6 +162,7 @@ run_clightning_install() {
     fetch_and_verify || return 1
     install_clightning || return 1
     setup_clightning_systemd || return 1
+    enable_pi_permissions || return 1
 
     echo_label ": Finished installing and initiating 'lightningd' system service"
     echo "Check '$CLIGHTNING_DATA_SYMLINK/cl.log' to confirm 'lightningd' is running..."

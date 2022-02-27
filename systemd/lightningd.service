@@ -9,7 +9,7 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-ExecStart=/usr/local/bin/lightningd --conf=/home/bitcoin/.lightning/cl.conf --pid-file=/home/bitcoin/.lightning/lightningd.pid
+ExecStart=/usr/local/bin/lightningd --conf=/home/bitcoin/.lightning/cl.conf --pid-file=/home/bitcoin/.lightning/lightningd.pid --rpc-file-mode=0660
 
 # Creates /run/lightningd owned by bitcoin
 RuntimeDirectory=lightningd
