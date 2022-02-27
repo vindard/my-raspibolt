@@ -1,0 +1,50 @@
+# RaspiBolt: systemd unit for c-lightning
+# /etc/systemd/system/lightningd.service
+
+[Unit]
+Description=c-lightning Daemon
+Requires=bitcoind.service
+After=bitcoind.service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/lightningd --conf=/home/bitcoin/.lightning/cl.conf --pid-file=/home/bitcoin/.lightning/lightningd.pid
+
+# Creates /run/lightningd owned by bitcoin
+RuntimeDirectory=lightningd
+
+User=bitcoin
+Group=bitcoin
+# Type=forking hangs on restart
+Type=simple
+PIDFile=/run/lightningd/lightningd.pid
+Restart=on-failure
+
+TimeoutSec=240
+RestartSec=30
+StandardOutput=null
+StandardError=journal
+
+# Hardening measures
+####################
+
+# Provide a private /tmp and /var/tmp.
+PrivateTmp=true
+
+# Mount /usr, /boot/ and /etc read-only for the process.
+ProtectSystem=full
+
+# Disallow the process and all of its children to gain
+# new privileges through execve().
+NoNewPrivileges=true
+
+# Use a new /dev namespace only populated with API pseudo devices
+# such as /dev/null, /dev/zero and /dev/random.
+PrivateDevices=true
+
+# Deny the creation of writable and executable memory mappings.
+MemoryDenyWriteExecute=true
+
+[Install]
+WantedBy=multi-user.target

@@ -50,6 +50,9 @@ source install/110_lndhub.sh
 # == mempool.space install functions ==
 source install/120_mempool.sh
 
+# == clightning install functions ==
+source install/140_clightning.sh
+
 
 # == > SCRIPT START < ==
 
@@ -199,6 +202,10 @@ step_19() {
     run_mempool_install
 }
 
+step_20() {
+    run_clightning_install
+}
+
 
 # == Step function calls ==
 
@@ -221,7 +228,8 @@ run_setup() {
     # step_16
     # step_17
     # step_18
-    step_19
+    # step_19
+    # step_20
 }
 
 run_setup
