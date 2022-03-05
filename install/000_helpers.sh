@@ -155,7 +155,7 @@ install_pyenv_for_user() {
 
     # Install pyenv
     if ! id $PYENV_USER > /dev/null 2>&1; then
-        sudo adduser $PYENV_USER
+        sudo adduser --gecos "" --disabled-password $PYENV_USER
     fi
     sudo -u $PYENV_USER install/012_pyenv.sh
 }

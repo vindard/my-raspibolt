@@ -44,7 +44,7 @@ install_thunderhub() {
 
     # Setup thunderhub user
     if ! id $THUNDERHUB_USER > /dev/null 2>&1; then
-        sudo adduser $THUNDERHUB_USER
+        sudo adduser --gecos "" --disabled-password $THUNDERHUB_USER
     fi
 
     # Setup thunderhub data dirs

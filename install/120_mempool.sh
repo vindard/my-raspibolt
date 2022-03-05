@@ -49,7 +49,7 @@ install_mempool() {
 
     # Setup mempool.space user
     if ! id $MEMPOOL_USER > /dev/null 2>&1; then
-        sudo adduser $MEMPOOL_USER
+        sudo adduser --gecos "" --disabled-password $MEMPOOL_USER
     fi
 
     # Clone repo

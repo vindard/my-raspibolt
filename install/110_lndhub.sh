@@ -53,7 +53,7 @@ install_lndhub() {
 
     # Setup LNDHub user
     if ! id $LNDHUB_USER > /dev/null 2>&1; then
-        sudo adduser $LNDHUB_USER
+        sudo adduser --gecos "" --disabled-password $LNDHUB_USER
     fi
 
     # Setup LNDHub data dirs

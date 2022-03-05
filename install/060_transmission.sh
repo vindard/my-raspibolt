@@ -39,7 +39,7 @@ configure_transmission() {
 
     # Check user, and create if not found
     if ! id $TSM_USER > /dev/null 2>&1; then
-        sudo adduser $TSM_USER
+        sudo adduser --gecos "" --disabled-password $TSM_USER
     fi
 
 

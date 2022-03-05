@@ -54,7 +54,7 @@ install_sphinx() {
 
     # Setup sphinx user
     if ! id $SPHINX_USER > /dev/null 2>&1; then
-        sudo adduser $SPHINX_USER
+        sudo adduser --gecos "" --disabled-password $SPHINX_USER
     fi
 
     # Setup sphinx data dir

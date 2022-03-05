@@ -74,7 +74,7 @@ setup_node_users() {
     sudo adduser admin
     sudo adduser admin sudo
 
-    sudo adduser bitcoin
+    sudo adduser --gecos "" --disabled-password bitcoin
     sudo adduser admin bitcoin
 }
 

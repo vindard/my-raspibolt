@@ -32,7 +32,7 @@ install_bos() {
 
     # Setup bos user
     if ! id $BOS_USER > /dev/null 2>&1; then
-        sudo adduser $BOS_USER
+        sudo adduser --gecos "" --disabled-password $BOS_USER
     fi
 
     # Setup bos data dir

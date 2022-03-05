@@ -141,7 +141,7 @@ step_11() {
 
     # Install pyenv
     if ! id $SPECTER_USER > /dev/null 2>&1; then
-        sudo adduser $SPECTER_USER
+        sudo adduser --gecos "" --disabled-password $SPECTER_USER
     fi
     sudo -u $SPECTER_USER install/012_pyenv.sh
 
@@ -160,7 +160,7 @@ step_12() {
     install_specter_deps
 
     if ! id $SPECTER_USER > /dev/null 2>&1; then
-        sudo adduser $SPECTER_USER
+        sudo adduser --gecos "" --disabled-password $SPECTER_USER
     fi
 
     RPC_USER=$(cat $HOME/.bitcoin/bitcoin.conf| grep "rpcuser" | awk -F= '{print $2}')

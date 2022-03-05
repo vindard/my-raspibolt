@@ -22,7 +22,7 @@ install_lndmanage() {
 	echo_label "lndmanage for user '$LNDMANAGE_USER'"
 
     if ! id $LNDMANAGE_USER > /dev/null 2>&1; then
-        sudo adduser $LNDMANAGE_USER
+        sudo adduser --gecos "" --disabled-password $LNDMANAGE_USER
     fi
 
 
