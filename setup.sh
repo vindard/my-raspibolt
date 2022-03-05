@@ -15,6 +15,7 @@ source install/000_helpers.sh
 
 # == System setup functions ==
 source install/010_system.sh
+source install/015_docker.sh
 
 # == bitcoind install functions ==
 source install/020_bitcoind.sh
@@ -206,6 +207,9 @@ step_20() {
     run_clightning_install
 }
 
+step_21() {
+    install_docker
+}
 
 # == Step function calls ==
 
@@ -230,6 +234,7 @@ run_setup() {
     # step_18
     # step_19
     # step_20
+    # step_21
 }
 
 run_setup
