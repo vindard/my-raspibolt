@@ -34,7 +34,9 @@ setup_symlinks() {
     # Setup symlinks
     sudo mkdir -p "$CLIGHTNING_DATA_DIR"
     sudo ln -s "$CLIGHTNING_DATA_DIR/" "$CLIGHTNING_DATA_SYMLINK"
+    sudo mkdir -p "$CLIGHTNING_DATA_SYMLINK/bitcoin"
     sudo chown -R bitcoin:bitcoin "$CLIGHTNING_DATA_SYMLINK"
+    sudo chown -R bitcoin:bitcoin "$CLIGHTNING_DATA_DIR"
 }
 
 verify_commit() {
@@ -130,6 +132,27 @@ install_clightning() {
     sudo chown -R $CLIGHTNING_USER: $CLIGHTNING_PLUGINS_DATA_DIR
     sudo ln -s $CLIGHTNING_PLUGINS_DATA_DIR $CLIGHTNING_PLUGINS_DIR
     sudo chown -R $CLIGHTNING_USER: $CLIGHTNING_PLUGINS_DIR
+
+    # Add backup plugin
+    PLUGIN_NAME="backup"
+
+    pushd /tmp > /dev/null
+    sudo rm -rf plugins
+    git clone git@github.com:lightningd/plugins.git
+    pushd plugins > /dev/null
+    sudo cp -r $PLUGIN_NAME $CLIGHTNING_PLUGINS_DIR
+    popd > /dev/null
+    popd > /dev/null
+
+    sudo -u bitcoin python3 -m pip install --user \
+        -r $CLIGHTNING_PLUGINS_DIR/$PLUGIN_NAME/requirements.txt
+    sudo chmod +x $CLIGHTNING_PLUGINS_DIR/$PLUGIN_NAME/$PLUGIN_NAME.py
+
+    sudo mkdir -p $CLIGHTNING_BACKUP_DIR
+    sudo chown -R $CLIGHTNING_USER: $CLIGHTNING_BACKUP_DIR
+    sudo -u bitcoin python3 $CLIGHTNING_PLUGINS_DIR/backup/backup-cli init \
+        --lightning-dir $CLIGHTNING_DATA_SYMLINK/bitcoin \
+        file://$CLIGHTNING_BACKUP_DIR/lightningd.sqlite3.backup
 
     # TODO: Add clboss
 
