@@ -14,6 +14,12 @@ SYMLINK_DIR="/home/$CLIGHTNING_USER"
 CLIGHTNING_DATA_SYMLINK="$SYMLINK_DIR/.$CLIGHTNING_DIRNAME"
 CLIGHTNING_DATA_DIR="$MOUNTPOINT/$CLIGHTNING_DIRNAME"
 
+# Note: Store on disk because external drive is mounted noexec (see 'sdb' entry in /etc/mtab)
+CLIGHTNING_PLUGINS_DATA_DIR="$SYMLINK_DIR/cln-plugins-enabled"
+CLIGHTNING_PLUGINS_DIR="$CLIGHTNING_DATA_DIR/plugins"
+
+BACKUPS_DIR="$MOUNTPOINT/apps-data/backups"
+CLIGHTNING_BACKUP_DIR="$BACKUPS_DIR/$CLIGHTNING_DIRNAME"
 
 # == Helper functions ==
 source install/000_helpers.sh
@@ -118,8 +124,16 @@ install_clightning() {
     echo_label ": Adding clightning configs"
     sudo cp "configs/cl.conf" "$CLIGHTNING_DATA_SYMLINK/"
 
-    # TODO: Configure plugins dir
+    # Configure plugins dir
+    echo_label ": Creating c-lightning plugins dir"
+    sudo mkdir -p $CLIGHTNING_PLUGINS_DATA_DIR
+    sudo chown -R $CLIGHTNING_USER: $CLIGHTNING_PLUGINS_DATA_DIR
+    sudo ln -s $CLIGHTNING_PLUGINS_DATA_DIR $CLIGHTNING_PLUGINS_DIR
+    sudo chown -R $CLIGHTNING_USER: $CLIGHTNING_PLUGINS_DIR
+
     # TODO: Add clboss
+
+    sudo chown -R $CLIGHTNING_USER: $CLIGHTNING_DATA_DIR
 }
 
 setup_clightning_systemd() {
