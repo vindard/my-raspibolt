@@ -131,6 +131,10 @@ install_clightning() {
     sudo ln -s $CLIGHTNING_PLUGINS_DATA_DIR $CLIGHTNING_PLUGINS_DIR
     sudo chown -R $CLIGHTNING_USER: $CLIGHTNING_PLUGINS_DIR
 
+    sudo chown -R $CLIGHTNING_USER: $CLIGHTNING_DATA_DIR
+}
+
+add_backup_plugin() {
     # Add backup plugin
     PLUGIN_NAME="backup"
 
@@ -151,8 +155,6 @@ install_clightning() {
     sudo -u bitcoin python3 $CLIGHTNING_PLUGINS_DIR/backup/backup-cli init \
         --lightning-dir $CLIGHTNING_DATA_SYMLINK/bitcoin \
         file://$CLIGHTNING_BACKUP_DIR/lightningd.sqlite3.backup
-
-    # TODO: Add clboss
 
     sudo chown -R $CLIGHTNING_USER: $CLIGHTNING_DATA_DIR
 }
@@ -188,7 +190,20 @@ enable_pi_permissions() {
         || echo "'lightning-cli' was not successfully permissioned to user 'pi'" && return 1
 }
 
+setup_backup_compaction_cronjob() {
+    # TODO implement this from: https://github.com/rootzoll/raspiblitz/blob/6d3af0cd8c79129d838cc91063e56c9d8c458ad7/home.admin/config.scripts/cl-plugin.backup.sh#L140
+    echo
+}
+
+setup_backup_auto_upload() {
+    # TODO implement this from: https://gist.github.com/vindard/e0cd3d41bb403a823f3b5002488e3f90
+    echo
+}
+
 bootstrap_node() {
+    # This script simply connects to 2 random recommended nodes. Alternatively we
+    # can manually connect with `$ lightning-cli connect <nodeid> <ip> <port>`.
+
     pushd $CLIGHTNING_GIT_DIR > /dev/null
     contrib/bootstrap-node.sh
     popd > /dev/null
@@ -204,8 +219,11 @@ run_clightning_install() {
     setup_symlinks || return 1
     fetch_and_verify || return 1
     install_clightning || return 1
+    add_backup_plugin || return 1
     setup_clightning_systemd || return 1
     enable_pi_permissions || return 1
+    setup_backup_compaction_cronjob || return 1
+    setup_backup_auto_upload || return 1
     bootstrap_node || return 1
     cleanup || return 1
 
