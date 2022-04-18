@@ -54,6 +54,7 @@ source install/120_mempool.sh
 # == clightning install functions ==
 source install/140_clightning.sh
 source install/141_cln_spark.sh
+source install/142_clboss.sh
 
 
 # == > SCRIPT START < ==
@@ -213,6 +214,10 @@ step_21() {
 }
 
 step_22() {
+    run_clboss_install
+}
+
+step_23() {
     install_docker
 }
 
@@ -241,6 +246,7 @@ run_setup() {
     # step_20
     # step_21
     # step_22
+    # step_23
 }
 
 run_setup
