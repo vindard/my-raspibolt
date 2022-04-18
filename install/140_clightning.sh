@@ -120,8 +120,6 @@ install_clightning() {
     sudo git checkout -
     popd > /dev/null
 
-    sudo rm -rf $CLIGHTNING_GIT_DIR
-
     # Configure clightning
     echo_label ": Adding clightning configs"
     sudo cp "configs/cl.conf" "$CLIGHTNING_DATA_SYMLINK/"
@@ -190,7 +188,15 @@ enable_pi_permissions() {
         || echo "'lightning-cli' was not successfully permissioned to user 'pi'" && return 1
 }
 
+bootstrap_node() {
+    pushd $CLIGHTNING_GIT_DIR > /dev/null
+    contrib/bootstrap-node.sh
+    popd > /dev/null
+}
 
+cleanup() {
+    sudo rm -rf $CLIGHTNING_GIT_DIR
+}
 
 # == Function calls ==
 
@@ -200,6 +206,8 @@ run_clightning_install() {
     install_clightning || return 1
     setup_clightning_systemd || return 1
     enable_pi_permissions || return 1
+    bootstrap_node || return 1
+    cleanup || return 1
 
     echo_label ": Finished installing and initiating 'lightningd' system service"
     echo "Check '$CLIGHTNING_DATA_SYMLINK/cl.log' to confirm 'lightningd' is running..."
