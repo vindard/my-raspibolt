@@ -187,9 +187,10 @@ fetch_and_install_channel_backup() {
     INSTALL_DIR="/usr/local/bin"
 
     BACKUP_SCRIPT="lnd-channel-backup.sh"
-    BACKUP_SCRIPT_URL="https://gist.githubusercontent.com/vindard/e0cd3d41bb403a823f3b5002488e3f90/raw/4bcf3c0163f77443a6f7c00caae0750b1fa0d63d/$BACKUP_SCRIPT"
+    BACKUP_SCRIPT_URL="https://gist.githubusercontent.com/vindard/e0cd3d41bb403a823f3b5002488e3f90/raw/999cca069387c866893f688e755c341c300b05c9/$BACKUP_SCRIPT"
 
-    BACKUP_SYSTEMD_FILE=systemd/lnd-channel-backup.service
+    SOURCE_SYSTEMD_FILE=systemd/inotify-backup.service
+    BACKUP_SYSTEMD_FILE=lnd-channel-backup.service
     SYSTEMD_DIR=/etc/systemd/system
 
     # Check for API token
@@ -218,16 +219,19 @@ fetch_and_install_channel_backup() {
 
 
     # Install systemd service and start
-    if [[ ! -e $BACKUP_SYSTEMD_FILE ]]; then
-        echo "No file found at $BACKUP_SYSTEMD_FILE to setup systemd service with."
+    if [[ ! -e $SOURCE_SYSTEMD_FILE ]]; then
+        echo "No file found at $SOURCE_SYSTEMD_FILE to setup systemd service with."
         return 1
     fi
 
-    sudo sed -i "s|ExecStart=.*|ExecStart=$INSTALL_DIR/$BACKUP_SCRIPT|g" $BACKUP_SYSTEMD_FILE
-
     echo
-    echo "Installing '$BACKUP_SYSTEMD_FILE' to '$SYSTEMD_DIR'..."
-    sudo cp $BACKUP_SYSTEMD_FILE $SYSTEMD_DIR/
+    echo "Installing '$SOURCE_SYSTEMD_FILE' to '$SYSTEMD_DIR/$BACKUP_SYSTEMD_FILE'..."
+    sudo cp \
+        $SOURCE_SYSTEMD_FILE \
+        $SYSTEMD_DIR/$BACKUP_SYSTEMD_FILE
+    sudo sed -i \
+        "s|ExecStart=.*|ExecStart=$INSTALL_DIR/$BACKUP_SCRIPT|g" \
+        $SYSTEMD_DIR/$BACKUP_SYSTEMD_FILE
     echo "Installed."
 
     sudo systemctl enable lnd-channel-backup
