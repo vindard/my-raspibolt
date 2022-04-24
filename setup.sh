@@ -55,6 +55,7 @@ source install/120_mempool.sh
 source install/140_clightning.sh
 source install/141_cln_spark.sh
 source install/142_clboss.sh
+source install/143_cln_remote_backup.sh
 
 
 # == > SCRIPT START < ==
@@ -218,6 +219,10 @@ step_22() {
 }
 
 step_23() {
+    run_cln_remote_backup_install
+}
+
+step_24() {
     install_docker
 }
 
@@ -247,6 +252,7 @@ run_setup() {
     # step_21
     # step_22
     # step_23
+    # step_24
 }
 
 run_setup
