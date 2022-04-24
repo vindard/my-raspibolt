@@ -9,11 +9,6 @@ SPARK_PORT="8000"
 
 SPARK_LOGIN_USERNAME=""
 SPARK_LOGIN_PASSWORD=""
-if [[ -z "$SPARK_LOGIN_USERNAME" ]] || [[ -z "$SPARK_LOGIN_PASSWORD" ]]
-then
-    echo "Please set username & password for the service"
-    echo "Exiting..." && echo
-fi
 
 # Dir & GitHub values
 SPARK_DIRNAME="spark-wallet"
@@ -105,6 +100,12 @@ setup_spark_systemd() {
 # == Function calls ==
 
 run_spark_install() {
+    if [[ -z "$SPARK_LOGIN_USERNAME" ]] || [[ -z "$SPARK_LOGIN_PASSWORD" ]]
+    then
+        echo "CLN-Spark install: Please set username & password for the service"
+        echo "CLN-Spark install:Exiting..." && echo
+    fi
+
     configure_ufw
     install_spark
     setup_spark_systemd
