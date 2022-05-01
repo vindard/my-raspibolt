@@ -1,7 +1,7 @@
 [Service]
 ExecStart=
 Restart=always
-RestartSec=1
+RestartSec=60
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=backup-channels
