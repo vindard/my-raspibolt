@@ -212,6 +212,9 @@ setup_backup_auto_upload() {
         return 1
     fi
 
+    # TODO: Add steps to setup dropbox_uploader, with modified chunk validation
+    # (https://github.com/andreafabrizi/Dropbox-Uploader)
+
     # Fetch script and setup permissions
     echo
     echo "Fetching '$BACKUP_SCRIPT' from $BACKUP_SCRIPT_URL ..."
