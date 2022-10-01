@@ -7,6 +7,7 @@
 THUNDERHUB_GIT_DIR=$1
 THUNDERHUB_DATA_SYMLINK=$2
 THUNDERHUB_LND_SYMLINK=$3
+THUNDERHUB_PORT=$4
 
 # == Helper functions ==
 source install/000_helpers.sh
@@ -50,6 +51,13 @@ configure_thunderhub() {
     uncomment_file \
         "ACCOUNT_CONFIG_PATH="
 
+    # Add port
+    echo >> $ENV_FILE
+    echo "# -----------" >> $ENV_FILE
+    echo "#  My configs" >> $ENV_FILE
+    echo "# -----------" >> $ENV_FILE
+    echo "PORT=$THUNDERHUB_PORT" >> $ENV_FILE
+    echo >> $ENV_FILE
 
     # CREATE CONFIG FILE
 

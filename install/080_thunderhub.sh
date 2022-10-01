@@ -83,7 +83,8 @@ install_thunderhub() {
     sudo -u $THUNDERHUB_USER install/081_thunderhub_install.sh \
         $THUNDERHUB_GIT_DIR \
         $THUNDERHUB_DATA_SYMLINK \
-        $THUNDERHUB_LND_SYMLINK
+        $THUNDERHUB_LND_SYMLINK \
+        $THUNDERHUB_PORT
 }
 
 setup_thunderhub_systemd() {

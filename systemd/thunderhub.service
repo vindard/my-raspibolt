@@ -8,7 +8,7 @@ After=lnd.service
 
 [Service]
 WorkingDirectory=<thunderhub-dir>
-ExecStart=/usr/bin/npm run start -- -p 3010
+ExecStart=/usr/bin/npm run start
 User=<thunderhub-user>
 Restart=always
 TimeoutSec=120
