@@ -56,6 +56,9 @@ source install/140_clightning.sh
 source install/141_cln_spark.sh
 source install/142_clboss.sh
 
+# == samba install functions ==
+source install/150_samba_fileshare.sh
+
 
 # == > SCRIPT START < ==
 
@@ -221,6 +224,11 @@ step_23() {
     install_docker
 }
 
+
+step_24() {
+    run_fileshare_install
+}
+
 # == Step function calls ==
 
 run_setup() {
@@ -247,6 +255,7 @@ run_setup() {
     # step_21
     # step_22
     # step_23
+    # step_24
 }
 
 run_setup
